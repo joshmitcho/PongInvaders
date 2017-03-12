@@ -1,1 +1,4 @@
 *.aep
+__init__.py
+*.pyc
+.idea
