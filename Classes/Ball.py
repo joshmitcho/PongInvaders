@@ -1,4 +1,5 @@
-import sys, pygame
+import sys
+import pygame
 
 
 class Ball:
@@ -11,7 +12,7 @@ class Ball:
         self.speed = [1, 1]
 
     def slide(self):
-        self.rect = self.rect.move(self.speed)
+        self.rect.move_ip(self.speed)
 
     def bounceX(self):
         self.speed[0] = -self.speed[0]

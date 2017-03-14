@@ -1,16 +1,18 @@
-import sys, pygame
+import sys
+import pygame
 from Classes.Ball import Ball
 from Classes.Paddle import Paddle
 
 pygame.init()
 
-size = width, height = 1280, 720
+size = width, height = 960, 720
 black = 0, 0, 0
 screen = pygame.display.set_mode(size)
+paddleEdgeDistance = 20
 
 ball = Ball(width, height)
-paddleL = Paddle(20)
-paddleR = Paddle(width-10)
+paddleL = Paddle(paddleEdgeDistance + 10)
+paddleR = Paddle(width - paddleEdgeDistance)
 
 ballBuffer = 20
 ballBufferIncrement = 5
@@ -30,6 +32,7 @@ def run():
 def loop(count):
     if count < ballBufferIncrement:
         ball.slide()
+    paddleR.rect.top = ball.rect.top - (paddleR.rect.bottom - paddleR.rect.top)/2
     if (ball.rect.left < 0 and ball.speed[0] <= 0) or (ball.rect.right > width and ball.speed[0] >= 0):
         ball.bounceX()
     elif (ball.rect.top < 0 and ball.movingUp()) or (ball.rect.bottom > height and ball.movingDown()):
@@ -37,15 +40,9 @@ def loop(count):
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_DOWN]:
-        if paddleR.rect.bottom <= height:
-            paddleR.down()
-    if keys[pygame.K_UP]:
-        if paddleR.rect.top >= 0:
-            paddleR.up()
-    if keys[pygame.K_s]:
         if paddleL.rect.bottom <= height:
             paddleL.down()
-    if keys[pygame.K_w]:
+    if keys[pygame.K_UP]:
         if paddleL.rect.top >= 0:
             paddleL.up()
 
