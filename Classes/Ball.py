@@ -11,7 +11,6 @@ class Ball:
         self.velocity = 3
 
     def slide(self):
-        print self.speed
         self.rect.move_ip(self.speed)
 
     def bounceX(self):

@@ -3,20 +3,21 @@ import pygame
 
 class Cannon:
 
-    velocity = 1
+    velocity = 10
 
-    def __init__(self, position):
+    def __init__(self, width, height):
         self.sprite = pygame.image.load("Resources\\Images\\cannon.png")
         self.rect = self.sprite.get_rect()
-        self.rect.right = position
+        self.rect.right = width
+        self.rect.bottom = height
         self.speed = [0, 0]
 
-    def down(self):
-        self.speed[1] = self.velocity
+    def left(self):
+        self.speed[0] = -self.velocity
         self.rect = self.rect.move(self.speed)
 
-    def up(self):
-        self.speed[1] = -self.velocity
+    def right(self):
+        self.speed[0] = self.velocity
         self.rect = self.rect.move(self.speed)
 
 

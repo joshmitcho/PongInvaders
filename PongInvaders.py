@@ -2,6 +2,7 @@ import sys
 import pygame
 from Classes.Ball import Ball
 from Classes.Paddle import Paddle
+from Classes.Cannon import Cannon
 
 pygame.init()
 
@@ -15,6 +16,7 @@ screen = pygame.display.set_mode(size)
 ball = Ball(width, height)
 paddleL = Paddle(30, True)
 paddleR = Paddle(width, False)
+cannon = Cannon(width / 2, height)
 
 def run():
     while 1:
@@ -30,12 +32,17 @@ def run():
 def getInput():
     keys = pygame.key.get_pressed()
 
+    if keys[pygame.K_RETURN] and ball.speed == [0, 0]:
+        ball.go()
+
     if keys[pygame.K_DOWN] and paddleL.rect.bottom <= height:
         paddleL.down()
     if keys[pygame.K_UP] and paddleL.rect.top >= 0:
         paddleL.up()
-    if keys[pygame.K_RETURN] and ball.speed == [0, 0]:
-        ball.go()
+    if keys[pygame.K_LEFT] and cannon.rect.left >= 0:
+        cannon.left()
+    if keys[pygame.K_RIGHT] and cannon.rect.right <= width:
+        cannon.right()
 
 
 def loop():
@@ -62,6 +69,7 @@ def draw():
     screen.blit(ball.sprite, ball.rect)
     screen.blit(paddleL.sprite, paddleL.rect)
     screen.blit(paddleR.sprite, paddleR.rect)
+    screen.blit(cannon.sprite, cannon.rect)
     pygame.display.flip()
 
 
