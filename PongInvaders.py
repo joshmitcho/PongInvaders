@@ -58,6 +58,8 @@ def loop():
 
     for b in bulletList:
         b.slide()
+        if b.rect.bottom <= 0:
+           bulletList.remove(b);
 
     ball.slide()
     paddleR.followBall(ball.rect.centery, screen)

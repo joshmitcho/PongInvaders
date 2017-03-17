@@ -44,6 +44,7 @@ class Ball:
         self.rect.centerx = width / 2
         self.rect.centery = height / 2
         self.speed = [0, 0]
+        self.velocity = 3
 
     def go(self):
         self.speed = [self.velocity, self.velocity]
