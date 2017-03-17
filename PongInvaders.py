@@ -3,6 +3,8 @@ import pygame
 from Classes.Ball import Ball
 from Classes.Paddle import Paddle
 from Classes.Cannon import Cannon
+from Classes.Bullet import Bullet
+
 
 pygame.init()
 
@@ -17,6 +19,8 @@ ball = Ball(width, height)
 paddleL = Paddle(30, True)
 paddleR = Paddle(width, False)
 cannon = Cannon(width / 2, height)
+
+bulletList = []
 
 def run():
     while 1:
@@ -39,14 +43,21 @@ def getInput():
         paddleL.down()
     if keys[pygame.K_UP] and paddleL.rect.top >= 0:
         paddleL.up()
+
     if keys[pygame.K_LEFT] and cannon.rect.left >= 0:
         cannon.left()
     if keys[pygame.K_RIGHT] and cannon.rect.right <= width:
         cannon.right()
 
+    if keys[pygame.K_SPACE]:
+        bulletList.append(Bullet(cannon.rect.centerx, height - cannon.rect.height))
+
 
 def loop():
     global score
+
+    for b in bulletList:
+        b.slide()
 
     ball.slide()
     paddleR.followBall(ball.rect.centery, screen)
@@ -70,6 +81,8 @@ def draw():
     screen.blit(paddleL.sprite, paddleL.rect)
     screen.blit(paddleR.sprite, paddleR.rect)
     screen.blit(cannon.sprite, cannon.rect)
+    for b in bulletList:
+        screen.blit(b.sprite, b.rect)
     pygame.display.flip()
 
 
