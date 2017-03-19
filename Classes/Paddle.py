@@ -25,6 +25,6 @@ class Paddle:
         self.rect.move_ip(self.speed)
 
     def followBall(self, ball, screen):
-        self.speed[1] = math.floor(-0.05*(self.rect.centery - ball))
+        self.speed[1] = math.floor(-0.1*(self.rect.centery - ball))
         self.rect.move_ip(self.speed)
         self.rect.clamp_ip(screen.get_rect())

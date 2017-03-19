@@ -25,19 +25,26 @@ bulletList = []
 def run():
     while 1:
         clock.tick(60)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-        getInput()
-        loop()
+
+        getDiscreteInput()
+        getContinuousInput()
+        update()
         draw()
 
 
-def getInput():
-    keys = pygame.key.get_pressed()
+def getDiscreteInput():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and len(bulletList) == 0:
+                bulletList.append(Bullet(cannon.rect.centerx, height - cannon.rect.height))
+            if event.key == pygame.K_RETURN and ball.speed == [0, 0]:
+                ball.go()
 
-    if keys[pygame.K_RETURN] and ball.speed == [0, 0]:
-        ball.go()
+
+def getContinuousInput():
+    keys = pygame.key.get_pressed()
 
     if keys[pygame.K_DOWN] and paddleL.rect.bottom <= height:
         paddleL.down()
@@ -49,28 +56,25 @@ def getInput():
     if keys[pygame.K_RIGHT] and cannon.rect.right <= width:
         cannon.right()
 
-    if keys[pygame.K_SPACE]:
-        bulletList.append(Bullet(cannon.rect.centerx, height - cannon.rect.height))
 
-
-def loop():
+def update():
     global score
 
     for b in bulletList:
         b.slide()
         if b.rect.bottom <= 0:
-           bulletList.remove(b);
+            bulletList.remove(b)
 
     ball.slide()
     paddleR.followBall(ball.rect.centery, screen)
 
-    if ball.rect.colliderect(paddleL.rect) and ball.movingLeft():
+    if ball.rect.colliderect(paddleL.rect) and ball.isMovingLeft():
         ball.rect.left = 31
-        ball.bounceX()
-    elif ball.rect.right >= width - 30 and ball.movingRight():
+        ball.bounceX(ball.rect.centery - paddleL.rect.centery)
+    elif ball.rect.colliderect(paddleR.rect)  and ball.isMovingRight():
         ball.rect.right = width - 31
-        ball.bounceX()
-    elif (ball.rect.top < 0 and ball.movingUp()) or (ball.rect.bottom > height and ball.movingDown()):
+        ball.bounceX(ball.rect.centery - paddleR.rect.centery)
+    elif (ball.rect.top < 0 and ball.isMovingUp()) or (ball.rect.bottom > height and ball.isMovingDown()):
         ball.bounceY()
     elif ball.rect.left < 0:
         ball.reset(width, height)

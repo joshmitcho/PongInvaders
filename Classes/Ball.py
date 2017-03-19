@@ -13,14 +13,16 @@ class Ball:
     def slide(self):
         self.rect.move_ip(self.speed)
 
-    def bounceX(self):
+    def bounceX(self, delta):
 
-        if self.speed[0] > 0:
-            self.speed[0] = -self.velocity
-        else:
-            self.speed[0] = self.velocity
+        absSpeed = abs(self.speed[0])
+        self.speed[0] = -(self.speed[0] / absSpeed) * (absSpeed + 1)
 
-        if random.choice([True, False]):
+        if delta > 0:
+            self.speed[1] = abs(self.speed[1])
+        elif delta < 0:
+            self.speed[1] = -abs(self.speed[1])
+        if delta == 0 and random.choice([True, False]):
             self.speed[1] += 1
 
         self.velocity += 1
@@ -28,16 +30,16 @@ class Ball:
     def bounceY(self):
         self.speed[1] = -self.speed[1]
 
-    def movingUp(self):
+    def isMovingUp(self):
         return self.speed[1] <= 0
 
-    def movingDown(self):
+    def isMovingDown(self):
         return self.speed[1] >= 0
 
-    def movingLeft(self):
+    def isMovingLeft(self):
         return self.speed[0] <= 0
 
-    def movingRight(self):
+    def isMovingRight(self):
         return self.speed[0] >= 0
 
     def reset(self, width, height):
