@@ -4,6 +4,7 @@ from Classes.Ball import Ball
 from Classes.Paddle import Paddle
 from Classes.Cannon import Cannon
 from Classes.Bullet import Bullet
+from Classes.Alien import Alien
 
 
 pygame.init()
@@ -21,6 +22,10 @@ paddleR = Paddle(width, False)
 cannon = Cannon(width / 2, height)
 
 bulletList = []
+alienList = []
+
+for i in range(0, 5):
+    alienList.append(Alien(i*100))
 
 def run():
     while 1:
@@ -89,6 +94,8 @@ def draw():
     screen.blit(cannon.sprite, cannon.rect)
     for b in bulletList:
         screen.blit(b.sprite, b.rect)
+    for a in alienList:
+        screen.blit(a.sprite, a.rect)
     pygame.display.flip()
 
 
